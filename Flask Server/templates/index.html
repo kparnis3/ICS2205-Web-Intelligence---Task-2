@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <script src="{{url_for('static', filename='lib/d3/d3.js')}}"></script>
+        <script src="{{url_for('static', filename='lib/d3/d3.layout.cloud.js')}}"></script>
+        <script src="{{url_for('static', filename='d3.wordcloud.js')}}"></script>
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/js_ajax_server.css') }}">
+    </head>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Employee Keyword Cloud</a>
+        </div>
+    </nav>
+
+     <!-- Header -->
+     <header class="jumbotron my-4">
+        <h1 class="display-3 text-sm-center">Keyword Cloud</h1>
+        <hr>
+        <div id="wrap">
+            <div id='wordcloud'></div>
+        </div>
+        <hr>
+        <p class="lead text-sm-center">(Simply click on  an employee to display cloud)</p>
+        <br>
+
+    </header>
+
+    <body>
+        
+        <!-- Page Content -->
+        <div class = "center"; style="font-size:1.5em">
+        <ul>
+        {% for user in data %}
+           
+        <button class="btn-group";  onclick="myFunction('{{user}}', {{cloud|safe}})"> {{user}}</button>
+            
+        {% endfor %}
+        </ul>
+        </div> 
+
+
+        <!-- Keyword creator -->
+        <script>
+            function myFunction(user, wordCloud) 
+            {
+        
+              document.getElementById("wordcloud").innerHTML = "";
+              var data = [];
+              
+              for(var i = 0; i < wordCloud[user].length; i++)
+              {
+                data.push({text: wordCloud[user][i][0], size: wordCloud[user][i][1]});
+              }
+
+              console.log(data);
+              d3.wordcloud()
+             .size([500, 300])
+             .selector('#wordcloud')
+             .words(data)
+             .start();
+
+            } 
+        </script>
+
+    </body>
+
+    <br><br><br>
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Kian Parnis 107601L</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+</html>
